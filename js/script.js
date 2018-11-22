@@ -1,19 +1,23 @@
 // Variables
 
+const $otherTitle = $("#other-title");
+const $activities = $(".activities");
+const $creditCard = $("#credit-card")
+
 // Set focus on the first text field
 $("#name").focus();
 
 // ”Job Role” section
 // Hide other-title input field on page load (progressive enhancement)
-$("#other-title").hide();
+$otherTitle.hide();
 
 $("#title").on("change", function () {
   // Show input if other is selected
   if ($("#title option:last").is(":selected")) {
-    $("#other-title").show();
+    $otherTitle.show();
   // Remove input if other is deselected
   } else {
-    $("#other-title").hide();
+    $otherTitle.hide();
   }
 });
 
@@ -25,31 +29,37 @@ $("#colors-js-puns").hide();
 
 
 $("#design").on("change", function () {
+  const $cornflowerBlue = $("#color option[value='cornflowerblue']");
+  const $darkSlateGrey = $("#color option[value='darkslategrey']");
+  const $gold = $("#color option[value='gold']");
+  const $tomato = $("#color option[value='tomato']");
+  const $steelBlue = $("#color option[value='steelblue']");
+  const $dimGrey = $("#color option[value='dimgrey']");
   if ($(this).val() === "js puns") {
     // Show and hide colors
-    $("#color option[value='cornflowerblue']").show();
-    $("#color option[value='darkslategrey']").show();
-    $("#color option[value='gold']").show();
-    $("#color option[value='tomato']").hide();
-    $("#color option[value='steelblue']").hide();
-    $("#color option[value='dimgrey']").hide();
+    $cornflowerBlue.show();
+    $darkSlateGrey.show();
+    $gold.show();
+    $tomato.hide();
+    $steelBlue.hide();
+    $dimGrey.hide();
     // Make sure the #color input field is updated
     $("#color").val("cornflowerblue");
   } else if ($(this).val() === "heart js") {
-    $("#color option[value='cornflowerblue']").hide();
-    $("#color option[value='darkslategrey']").hide();
-    $("#color option[value='gold']").hide();
-    $("#color option[value='tomato']").show();
-    $("#color option[value='steelblue']").show();
-    $("#color option[value='dimgrey']").show();
+    $cornflowerBlue.hide();
+    $darkSlateGrey.hide();
+    $gold.hide();
+    $tomato.show();
+    $steelBlue.show();
+    $dimGrey.show();
     $("#color").val("tomato");
   } else {
-    $("#color option[value='cornflowerblue']").show();
-    $("#color option[value='darkslategrey']").show();
-    $("#color option[value='gold']").show();
-    $("#color option[value='tomato']").show();
-    $("#color option[value='steelblue']").show();
-    $("#color option[value='dimgrey']").show();
+    $cornflowerBlue.show();
+    $darkSlateGrey.show();
+    $gold.show();
+    $tomato.show();
+    $steelBlue.show();
+    $dimGrey.show();
     $("#color").val("cornflowerblue");
   }
   //Hide color section until design selection is made
@@ -62,14 +72,17 @@ $("#design").on("change", function () {
 
 // Function to disable the checkboxes with the same time (could improve it, by splitting after "-" and popping it and comparing these strings)
 function disableSameTime (name, name2) {
+  const $nameTwo = $(`input[name=${name2}]`);
   if ($(`input[name=${name}]`).is(":checked")) {
-    $(`input[name=${name2}]`).attr("disabled", true);
-    $(`input[name=${name2}]`).parent().css("color", "grey");
+    $nameTwo.attr("disabled", true);
+    $nameTwo.parent().css("color", "grey");
   } else {
-    $(`input[name=${name2}]`).removeAttr("disabled");
-    $(`input[name=${name2}]`).parent().css("color", "black");
+    $nameTwo.removeAttr("disabled");
+    $nameTwo.parent().css("color", "black");
   }
 }
+
+// Make more DRY?
 
 $("input[name='js-frameworks']").change(function () {
   disableSameTime("js-frameworks", "express")
@@ -87,47 +100,46 @@ $("input[name='node']").change(function () {
   disableSameTime("node", "js-libs")
 });
 
-// (could improve it by taking last three digits of string and parseInting them)
-
-//Make code more DRY? Only difference is cost. Save function, add parameter?
+// Adding the activity costs
 let cost = 0;
 // Add costs
-$(".activities").change(function (event) {
+$activities.change(function (event) {
+  const $activitiesCost = $(".activities p");
   if ($(event.target).attr("name") === "all") {
     // Cost of Main conference
     if ($(event.target).is(":checked")){
       //append new element
-      if($(".activities p").length === 0) {
+      if($activitiesCost.length === 0) {
         cost += 200;
-        $(".activities").append(`<p>Total Cost: $${cost}</p>`)
+        $activities.append(`<p>Total Cost: $${cost}</p>`)
       //if element exists, just change text
-      } else if ($(".activities p").length > 0) {
+      } else if ($activitiesCost.length > 0) {
         cost += 200;
-        $(".activities p").text(`Total Cost: $${cost}`);
+        $activitiesCost.text(`Total Cost: $${cost}`);
       }
       //Remove cost if deselected
     } else {
       cost -= 200;
-      $(".activities p").text(`Total Cost: $${cost}`);
+      $activitiesCost.text(`Total Cost: $${cost}`);
     }
     // Cost for all other events
   } else if ($(event.target).attr("type") === "checkbox") {
     if ($(event.target).is(":checked")){
-      if($(".activities p").length === 0) {
+      if($activitiesCost.length === 0) {
         cost += 100;
-        $(".activities").append(`<p>Total Cost: $${cost}</p>`)
-      } else if ($(".activities p").length > 0) {
+        $activities.append(`<p>Total Cost: $${cost}</p>`)
+      } else if ($activitiesCost.length > 0) {
         cost += 100;
-        $(".activities p").text(`Total Cost: $${cost}`);
+        $activitiesCost.text(`Total Cost: $${cost}`);
       }
     } else {
       cost -= 100;
-      $(".activities p").text(`Total Cost: $${cost}`);
+      $activitiesCost.text(`Total Cost: $${cost}`);
     }
   }
   // Remove cost <p> element if cost is zero
   if (cost === 0) {
-   $(".activities p").remove();
+   $activitiesCost.remove();
   }
 });
 
@@ -139,38 +151,42 @@ $("#payment").val("credit card");
 
 $("option[value='select_method']").hide();
 
-$("#credit-card").next().hide();
-$("#credit-card").next().next().hide();
+$creditCard.next().hide();
+$creditCard.next().next().hide();
 
 $("#payment").change(function () {
   if ($(this).val() === "credit card") {
-    $("#credit-card").next().next().hide();
-    $("#credit-card").next().hide();
-    $("#credit-card").show();
+    $creditCard.next().next().hide();
+    $creditCard.next().hide();
+    $creditCard.show();
   } else if ($(this).val() === "paypal") {
-    $("#credit-card").next().next().hide();
-    $("#credit-card").next().show();
-    $("#credit-card").hide();
+    $creditCard.next().next().hide();
+    $creditCard.next().show();
+    $creditCard.hide();
   } else if ($(this).val() === "bitcoin") {
-    $("#credit-card").next().next().show();
-    $("#credit-card").next().hide();
-    $("#credit-card").hide();
+    $creditCard.next().next().show();
+    $creditCard.next().hide();
+    $creditCard.hide();
   }
 })
 
+
+
+
 // Form validation messages
-// Why doesnt submit work?
-$("button[type='submit']").submit(function (e) {
-  e.preventDefault();
+$("button").click(function (e) {
   // Name Form
   if ($("#name").val() === "") {
-    $("#name").before("<span class='name-hint' style='color:red;'>This field is required</span>");
-  } else {
+    e.preventDefault(); //If input not right, stop submit
+    if ($(".name-hint").length === 0) { //Only create new hint message, if it doesn't exist yet
+      $("#name").before("<span class='name-hint' style='color:red;'>This field is required</span>");
+    }
+  } else { //If the input is correct, remove warning message
     $("name-hint").remove();
   }
   // Checkbox Form
   if ($("input[type='checkbox']:checked").length === 0 ) {
-    e.preventDefault;
+    e.preventDefault();
     if ($(".checkbox-hint").length === 0) {
     $(".activities legend").after("<span class='checkbox-hint' style='color:red;'>You have to pick at least one activity.</span>")
   } else {
@@ -180,9 +196,14 @@ $("button[type='submit']").submit(function (e) {
   // Email Form
   const emailInput = $("#mail").val();
   if (/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput) === false) {
-     if ($(".mail-hint").length === 0) {
-       $("#mail").before(`<p class="mail-hint" style='color:red;'>Please enter a valid email adress (ex. person@example.com).</p>`);
-     }
+    e.preventDefault();
+    if (emailInput === "") { // Conditional Hint: Remove old hint and replace with the right hint
+      $(".mail-hint").remove();
+      $("#mail").before(`<p class="mail-hint" style='color:red;'>This field is required.</p>`); //If field is empty
+    } else {  // All the other ways the input doesn't match the regex
+      $(".mail-hint").remove();
+      $("#mail").before(`<p class="mail-hint" style='color:red;'>Please enter a valid email adress (ex. person@example.com).</p>`);
+    }
   } else {
     $(".mail-hint").remove();
   }
@@ -190,37 +211,41 @@ $("button[type='submit']").submit(function (e) {
   const ccInput = $("#cc-num").val();
   if ($("#payment").val() === "credit card") {
     if (/^[0-9]{13,16}$/i.test(ccInput) === false) {
+      e.preventDefault();
       if ($(".cc-hint").length === 0) {
         $("#cc-num").after(`<p class="cc-hint" style='color:red;'>Please enter a number that is between 13 and 16 digits long.</p>`);
     }
     } else {
       $(".cc-hint").remove();
     }
-  }
-  // Zip Form
-  const zipInput = $("#zip").val();
-  if (/^[0-9]{5}$/i.test(zipInput) === false) {
-   if ($(".zip-hint").length === 0) {
-     $("#zip").after(`<p class="zip-hint" style='color:red;'>Please enter a 5 digit number.</p>`);
-   } else {
-     $(".zip-hint").remove();
+
+    // Zip Form
+    const zipInput = $("#zip").val();
+    if (/^[0-9]{5}$/i.test(zipInput) === false) {
+      e.preventDefault();
+       if ($(".zip-hint").length === 0) {
+         $("#zip").after(`<p class="zip-hint" style='color:red;'>Please enter a 5 digit number.</p>`);
+       }
+     } else {
+       $(".zip-hint").remove();
    }
- }
- //CVV Form
- const cvvInput = $("#cvv").val();
- if (/^[0-9]{3}$/i.test(cvvInput) === false) {
-    if ($(".cvv-hint").length === 0) {
-      $("#cvv").after(`<p class="cvv-hint" style='color:red;'>Please enter a 3 digit number.</p>`);
-    }
- } else {
-   $(".cvv-hint").remove();
- }
+   //CVV Form
+    const cvvInput = $("#cvv").val();
+    if (/^[0-9]{3}$/i.test(cvvInput) === false) {
+    e.preventDefault();
+      if ($(".cvv-hint").length === 0) {
+        $("#cvv").after(`<p class="cvv-hint" style='color:red;'>Please enter a 3 digit number.</p>`);
+      }
+    } else {
+     $(".cvv-hint").remove();
+   }
+  }
 });
 
-// Not very DRY
+
+
 
 // Remove name hint after signup failure
-
 $("#name").keyup(function () {
   if ($("#name").val() !== "") {
     if ($(".name-hint").length !== 0) {
@@ -242,8 +267,7 @@ $("#mail").keyup(function () {
 });
 
 // Remove activity hint after signup failure
-
-$(".activities").change( function () {
+$activities.change( function () {
   if ($("input[type='checkbox']:checked").length !== 0 ) {
     if ($(".checkbox-hint").length !== 0) {
       $(".checkbox-hint").remove();
@@ -263,7 +287,7 @@ $("#cc-num").keyup(function () {
    }
 });
 
-// Zip Code keyup warning
+// Zip Code keyup hint
 $("#zip").keyup(function () {
    const zipInput = $("#zip").val();
    if (/^[0-9]{5}$/i.test(zipInput) === true || zipInput === "") {
@@ -275,7 +299,7 @@ $("#zip").keyup(function () {
   }
 });
 
-// CCV keyup warning
+// CCV keyup hint
 $("#cvv").keyup(function () {
    const cvvInput = $("#cvv").val();
    if (/^[0-9]{3}$/i.test(cvvInput) === true || cvvInput === "") {

@@ -189,13 +189,13 @@ $("button").click(function (e) {
     e.preventDefault();
     if ($(".checkbox-hint").length === 0) {
     $(".activities legend").after("<span class='checkbox-hint' style='color:red;'>You have to pick at least one activity.</span>")
+  }
   } else {
     $(".checkbox-hint").remove();
   }
-  }
   // Email Form
   const emailInput = $("#mail").val();
-  if (/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput) === false) {
+  if (/^[^@ ]+@[^@. ]+\.[a-z]+$/i.test(emailInput) === false) {
     e.preventDefault();
     if (emailInput === "") { // Conditional Hint: Remove old hint and replace with the right hint
       $(".mail-hint").remove();
@@ -257,9 +257,9 @@ $("#name").keyup(function () {
 // Email keyup hint
 $("#mail").keyup(function () {
    const emailInput = $("#mail").val();
-   if (/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput) === true || emailInput === "") {
+   if (/^[^@ ]+@[^@. ]+\.[a-z]+$/i.test(emailInput) === true || emailInput === "") {
     $(".mail-hint").remove();
-  } else if (/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput) === false) {
+  } else if (/^[^@ ]+@[^@. ]+\.[a-z]+$/i.test(emailInput) === false) {
       if ($(".mail-hint").length === 0) {
         $("#mail").before(`<p class="mail-hint" style='color:red;'>Please enter a valid email adress (ex. person@example.com).</p>`);
       }
@@ -282,7 +282,7 @@ $("#cc-num").keyup(function () {
      $(".cc-hint").remove();
    } else if (/^[0-9]{13,16}$/i.test(ccInput) === false) {
       if ($(".cc-hint").length === 0) {
-        $("#cc-num").after(`<p class="cc-hint style='color:red;'">Please enter a number that is between 13 and 16 digits long.</p>`);
+        $("#cc-num").after(`<p class="cc-hint" style='color:red;'>Please enter a number that is between 13 and 16 digits long.</p>`);
      }
    }
 });
@@ -294,7 +294,7 @@ $("#zip").keyup(function () {
      $(".zip-hint").remove();
   } else if (/^[0-9]{5}$/i.test(zipInput) === false) {
     if ($(".zip-hint").length === 0) {
-      $("#zip").after(`<p class="zip-hint style='color:red;'">Please enter a 5 digit number.</p>`);
+      $("#zip").after(`<p class="zip-hint" style='color:red;'>Please enter a 5 digit number.</p>`);
     }
   }
 });
@@ -306,7 +306,7 @@ $("#cvv").keyup(function () {
      $(".cvv-hint").remove();
    } else if (/^[0-9]{3}$/i.test(cvvInput) === false) {
       if ($(".cvv-hint").length === 0) {
-        $("#cvv").after(`<p class="cvv-hint style='color:red;'">Please enter a 3 digit number.</p>`);
+        $("#cvv").after(`<p class="cvv-hint" style='color:red;'>Please enter a 3 digit number.</p>`);
       }
    }
 });
